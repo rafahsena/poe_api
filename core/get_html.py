@@ -20,12 +20,11 @@ def get_currencies_info(url):
     if not rows:
         log_error("Couldn't find any currency")
     else:
-        for column in rows:
-            data = column.find_elements_by_tag_name('td')
-            for value in data:
-                print(value.text)
-            print('-------')
-            
+        for row in rows:
+            name = row.find_element_by_xpath('.//td//span')
+            change = row.find_element_by_xpath('.//td[2]//span')
+            value = row.find_element_by_xpath('.//td[3]//span').get_attribute('title')
+            print(value)
 
     driver.quit()
 
