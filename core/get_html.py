@@ -15,7 +15,6 @@ def get_url(url):
 def get_currencies_info(url):
     driver = get_url(url)
     currency_table = driver.find_element_by_xpath('//table/tbody')
-    #currency_table.
     rows = currency_table.find_elements_by_tag_name('tr')
     if not rows:
         log_error("Couldn't find any currency")
@@ -25,7 +24,6 @@ def get_currencies_info(url):
             change = row.find_element_by_xpath('.//td[2]//span')
             value = row.find_element_by_xpath('.//td[3]//span').get_attribute('title')
             print(value)
-
     driver.quit()
 
 
