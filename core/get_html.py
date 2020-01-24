@@ -1,4 +1,9 @@
 from selenium import webdriver
+import requests
+from django.utils.text import slugify
+from currencies.models import Currency
+
+API_ENDPOINT = 'http://localhost:8000/currencies/'
 
 def get_driver():
     fireFoxOptions = webdriver.FirefoxOptions()
@@ -16,15 +21,36 @@ def get_currencies_info(url):
     driver = get_url(url)
     currency_table = driver.find_element_by_xpath('//table/tbody')
     rows = currency_table.find_elements_by_tag_name('tr')
+    currencies = []
     if not rows:
-        log_error("Couldn't find any currency")
+        driver.quit()
+        raise Exception("Couldn't find any currency")
     else:
         for row in rows:
-            name = row.find_element_by_xpath('.//td//span')
-            change = row.find_element_by_xpath('.//td[2]//span')
-            value = row.find_element_by_xpath('.//td[3]//span').get_attribute('title')
-            print(value)
-    driver.quit()
+            name = row.find_element_by_xpath('.//td//span').text
+            change = row.find_element_by_xpath('.//td[2]//span').text
+            chaos_value = float(row.find_element_by_xpath('.//td[3]//span').get_attribute('title'))
+            currency_value = float(row.find_element_by_xpath('.//td[4]//span').get_attribute('title'))
+            slug = slugify(name)
+            value = Currency.currency_converter(chaos_value, currency_value)
+            currency = {
+                "name" : name,
+                "change" : change,
+                "value" : value,
+                "slug" : slug
+            }
+            currencies.append(currency)
+        driver.quit()
+    return currencies
+
+def post_currencies(url):
+    currencies = get_currencies_info(url)
+    return requests.post(API_ENDPOINT, json = currencies, headers={'Authorization': 'Bearer db3a2e83dc3c77789a3abaed56611c4b14612860'})
+
+def update_currencies(url):
+    currencies = get_currencies_info(url)
+    r = requests.put(API_ENDPOINT + 'bulk_update/', json = currencies, headers={'Authorization': 'Bearer db3a2e83dc3c77789a3abaed56611c4b14612860'})
+    print(r.text)
 
 
 def log_error(e):
