@@ -55,3 +55,4 @@ def update_currencies(url):
 
 def log_error(e):
     print(e)
+    

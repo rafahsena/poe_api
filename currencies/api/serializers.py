@@ -3,7 +3,6 @@ from currencies.models import Currency
 
 class CurrencyListSerializer(serializers.ListSerializer):
     def update(self, instance, validated_data):
-        print(validated_data)
         currency_mapping = {currency.slug: currency for currency in instance}
         data_mapping = {item['slug']: item for item in validated_data}
         
