@@ -20,17 +20,15 @@ class CurrencyViewSet(viewsets.ModelViewSet):
             data = kwargs["data"]
 
             # check if many is 
-            print("oi")
             if isinstance(data, list):
                 kwargs["many"] = True
-                print('alooooooo')
 
         return super().get_serializer(*args, **kwargs)
 
     @action(methods=['put'], detail=False)
     def bulk_update(self, request):
         qs = self.get_queryset()
-        serializer = self.get_serializer(data=request.data, instance=qs, many=True)
+        serializer = self.get_serializer(data=request.data, instance=qs)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
