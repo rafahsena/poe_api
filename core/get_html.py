@@ -8,7 +8,7 @@ API_ENDPOINT = 'http://localhost:8000/currencies/'
 def get_driver():
     fireFoxOptions = webdriver.FirefoxOptions()
     fireFoxOptions.set_headless()
-    driver = webdriver.Firefox(executable_path=r'/opt/geckodriver', firefox_options=fireFoxOptions)
+    driver = webdriver.Firefox(executable_path='./geckodriver', firefox_options=fireFoxOptions)
     return driver
 
 
@@ -32,7 +32,7 @@ def get_currencies_info(url):
             chaos_value = float(row.find_element_by_xpath('.//td[3]//span').get_attribute('title'))
             currency_value = float(row.find_element_by_xpath('.//td[4]//span').get_attribute('title'))
             slug = slugify(name)
-            value = Currency.currency_converter(chaos_value, currency_value)
+            value = chaos_value/currency_value
             currency = {
                 "name" : name,
                 "change" : change,
@@ -45,12 +45,11 @@ def get_currencies_info(url):
 
 def post_currencies(url):
     currencies = get_currencies_info(url)
-    return requests.post(API_ENDPOINT, json = currencies, headers={'Authorization': 'Bearer db3a2e83dc3c77789a3abaed56611c4b14612860'})
+    return requests.post(API_ENDPOINT, json = currencies, headers={'Authorization': 'Bearer f79a8b5daa697474d5099108749209877f06d2d9'})
 
 def update_currencies(url):
     currencies = get_currencies_info(url)
-    r = requests.put(API_ENDPOINT + 'bulk_update/', json = currencies, headers={'Authorization': 'Bearer db3a2e83dc3c77789a3abaed56611c4b14612860'})
-    print(r.text)
+    r = requests.put(API_ENDPOINT + 'bulk_update/', json = currencies, headers={'Authorization': 'Bearer f79a8b5daa697474d5099108749209877f06d2d9'})
 
 
 def log_error(e):
