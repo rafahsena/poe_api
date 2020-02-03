@@ -1,0 +1,6 @@
+celery
+django
+djangorestframework
+pillow
+selenium
+redis

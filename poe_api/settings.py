@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from kombu import Exchange, Queue
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -127,3 +129,14 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10
 }
+
+task_default_queue = 'default' #1
+default_exchange = Exchange('media', type='direct') #2
+task_queues = (
+    Queue(
+        'media_queue', #3
+        exchange=default_exchange, #4
+        routing_key='video' #5
+    )
+)
+CELERY_BROKER_URL='redis://'
