@@ -45,11 +45,11 @@ def get_currencies_info(url):
 
 def post_currencies(url):
     currencies = get_currencies_info(url)
-    return requests.post(API_ENDPOINT, json = currencies, headers={'Authorization': 'Bearer f79a8b5daa697474d5099108749209877f06d2d9'})
+    return requests.post(API_ENDPOINT, json = currencies, headers={'Authorization': 'Bearer 3a18e524eb40f14c23b987a410e3d39cbebee964'})
 
 def update_currencies(url):
     currencies = get_currencies_info(url)
-    r = requests.put(API_ENDPOINT + 'bulk_update/', json = currencies, headers={'Authorization': 'Bearer f79a8b5daa697474d5099108749209877f06d2d9'})
+    r = requests.put(API_ENDPOINT + 'bulk_update/', json = currencies, headers={'Authorization': 'Bearer 3a18e524eb40f14c23b987a410e3d39cbebee964'})
 
 
 def log_error(e):
