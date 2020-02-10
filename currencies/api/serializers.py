@@ -19,5 +19,5 @@ class CurrencySerializer(serializers.ModelSerializer):
     class Meta:
         list_serializer_class = CurrencyListSerializer
         model = Currency
-        fields = ('slug', 'name', 'value', 'change')
+        fields = ('slug', 'name', 'value', 'change', 'image')
         read_only_fields = ('id', 'slug')

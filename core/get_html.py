@@ -3,6 +3,8 @@ import requests
 from django.utils.text import slugify
 from currencies.models import Currency
 import json
+from PIL import Image
+from io import BytesIO
 
 API_ENDPOINT = 'http://localhost:8000/currencies/'
 
@@ -29,6 +31,7 @@ def get_currencies_info(url):
     else:
         for row in rows:
             name = row.find_element_by_xpath('.//td//span').text
+            img_url = row.find_element_by_xpath('.//td//img').get_attribute('src')
             change = row.find_element_by_xpath('.//td[2]//span').text
             chaos_value = float(row.find_element_by_xpath('.//td[3]//span').get_attribute('title'))
             currency_value = float(row.find_element_by_xpath('.//td[4]//span').get_attribute('title'))
@@ -38,6 +41,7 @@ def get_currencies_info(url):
                 "name" : name,
                 "change" : change,
                 "value" : value,
+                "image" : img_url,
                 "slug" : slug
             }
             currencies.append(currency)

@@ -8,6 +8,7 @@ class Currency(models.Model):
     change = models.CharField(max_length=10, blank=True, default="0%")
     value = models.FloatField(validators=[MinValueValidator(0)])
     slug = models.SlugField(unique=True, primary_key=True)
+    image = models.URLField()
 
     @staticmethod
     def currency_converter(currency1, currency2):
