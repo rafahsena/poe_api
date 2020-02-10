@@ -4,3 +4,6 @@ djangorestframework
 pillow
 selenium
 redis
+requests
+pathlib
+channels
