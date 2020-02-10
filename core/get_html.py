@@ -2,6 +2,7 @@ from selenium import webdriver
 import requests
 from django.utils.text import slugify
 from currencies.models import Currency
+import json
 
 API_ENDPOINT = 'http://localhost:8000/currencies/'
 
@@ -43,7 +44,7 @@ def get_currencies_info(url):
         driver.quit()
     return currencies
 
-def post_currencies(url):
+def post_currencies(url):   
     currencies = get_currencies_info(url)
     return requests.post(API_ENDPOINT, json = currencies, headers={'Authorization': 'Bearer 3a18e524eb40f14c23b987a410e3d39cbebee964'})
 
