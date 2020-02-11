@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.text import slugify
 from django.core.validators import MinValueValidator
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 # Create your models here.
 class Currency(models.Model):
@@ -16,6 +18,17 @@ class Currency(models.Model):
 
     def save(self, **kwargs):
         self.slug = slugify(self.name)
+        if Currency.objects.filter(pk=self.pk).exists():
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send(
+                'currencies_notifications', 
+                {
+                    'type': 'currency_update', 
+                    'instance': self,
+                },
+
+                )
+            )
         return super().save(**kwargs)
 
     def __str__(self):

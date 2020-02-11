@@ -142,3 +142,12 @@ task_queues = (
 )
 CELERY_BROKER_URL='redis://'
 ASGI_APPLICATION = "poe_api.routing.application"
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('localhost', 6379)],
+        },
+    },
+}
