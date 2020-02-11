@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core',
     'rest_framework',
     'rest_framework.authtoken',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -140,3 +141,4 @@ task_queues = (
     )
 )
 CELERY_BROKER_URL='redis://'
+ASGI_APPLICATION = "poe_api.routing.application"
