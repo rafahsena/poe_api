@@ -20,15 +20,15 @@ class Currency(models.Model):
         self.slug = slugify(self.name)
         if Currency.objects.filter(pk=self.pk).exists():
             channel_layer = get_channel_layer()
-            async_to_sync(channel_layer.group_send(
+            async_to_sync(channel_layer.group_send)(
                 'currencies_notifications', 
                 {
-                    'type': 'currency_update', 
-                    'instance': self,
+                    'type': 'currency.update', 
+                    'currency': self.name,
+                    'value': self.value
                 },
 
                 )
-            )
         return super().save(**kwargs)
 
     def __str__(self):

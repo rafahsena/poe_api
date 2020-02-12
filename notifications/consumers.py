@@ -7,8 +7,8 @@ class NotificationConsumer(WebsocketConsumer):
     def connect(self):
         self.accept()
         info = parse.parse_qs(self.scope['query_string'].decode('utf8'))
-        self.currency = info['currency']
-        self.value = info['value']
+        self.currency = info['currency'][0]
+        self.value = float(info['value'][0])
         self.group_name = 'currencies_notifications'
         async_to_sync(self.channel_layer.group_add)(
             self.group_name,
@@ -30,8 +30,9 @@ class NotificationConsumer(WebsocketConsumer):
             'message': message
         }))
 
-    def currency_update(self, instance):
-        if instance.value < self.value:
+    def currency_update(self, event):
+        print(self.value, event['value'])
+        if event['value'] <= self.value:
             self.send(text_data=json.dumps({
-                'message': 'Chegou num valor bom!'
+                'message': f'A moeda {event["currency"]} agora vale {event["value"]}!'
             })) 
